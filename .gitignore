@@ -99,3 +99,6 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+# This repo downloads captcha jpgs in verbose mode
+/*.jpg
