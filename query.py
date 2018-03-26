@@ -111,7 +111,7 @@ def loginAndGetResponse():
             print(p)
             raise Exception('Failed at accept url %s' % (accept_url))
 
-        p = s.post(myinfo_url)
+        p = s.get(myinfo_url)
         if is_verbose:
             print(p.text)
         if p.status_code != 200:
