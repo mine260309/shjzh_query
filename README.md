@@ -18,5 +18,5 @@ Or preferably install in a virtual env, e.g. virtualenv or anaconda
 
 ## Usage
 ```
-shjzh_username=$your_id_number shjzh_password=$your_password ./query.py -q
+shjzh_username=$your_id_number shjzh_password=$your_password python3 query.py -q
 ```
