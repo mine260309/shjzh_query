@@ -13,6 +13,8 @@ import unittest
 
 is_verbose = False
 
+def eprint(*args, **kwargs):
+        print(*args, file=sys.stderr, **kwargs)
 
 def parseCaptcha(s):
     pic_url = "https://jzh.12333sh.gov.cn/jzh/image.jsp?Math.random();"
@@ -81,14 +83,14 @@ def loginAndGetResponse():
         if is_verbose:
             print(p.text)
         if p.status_code != 200:
-            print(p)
+            eprint(p)
             raise Exception('Failed to get loading url %s' % (loading_url))
 
         # Get captcha parse
         text = parseCaptcha(s)
         while (len(text) != 4):
             import time
-            print('Error parsing a captcha, try another one...')
+            eprint('Error parsing a captcha, try another one...')
             time.sleep(0.5)
             text = parseCaptcha(s)
 
@@ -100,7 +102,7 @@ def loginAndGetResponse():
         if is_verbose:
             print(p.text)
         if p.status_code != 200:
-            print(p)
+            eprint(p)
             raise Exception('Failed at login url %s' % (login_url))
 
         # Press Accept button
@@ -108,14 +110,14 @@ def loginAndGetResponse():
         if is_verbose:
             print(p.text)
         if p.status_code != 200:
-            print(p)
+            eprint(p)
             raise Exception('Failed at accept url %s' % (accept_url))
 
         p = s.get(myinfo_url)
         if is_verbose:
             print(p.text)
         if p.status_code != 200:
-            print(p)
+            eprint(p)
             raise Exception('Failed at myinfo url %s' % (myinfo_url))
         return p.content
 

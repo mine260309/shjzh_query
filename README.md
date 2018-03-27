@@ -17,6 +17,18 @@ pip3 install opencv-python beautifulsoup4 numpy pytesseract requests
 Or preferably install in a virtual env, e.g. virtualenv or anaconda
 
 ## Usage
+
+* To query the result:
 ```
 shjzh_username=$your_id_number shjzh_password=$your_password python3 query.py -q
+```
+
+* To query and send mail:
+```
+shjzh_username=$your_id_number shjzh_password=$your_password shjzh_mailto=$your_email ./check_and_mail.sh
+```
+
+* To put into a crontab run at 12:00 daily:
+```
+0 12 * * * shjzh_username=$your_id_number shjzh_password=$your_password shjzh_mailto=$your_email /path/to/check_and_mail.sh
 ```
