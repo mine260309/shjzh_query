@@ -1,0 +1,225 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>公共服务平台-积分管理</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="/jzzjf/style/style.css"
+	rel="stylesheet" type="text/css">
+<link href="/jzzjf/style/main.css"
+	rel="stylesheet" type="text/css">
+<script type="text/javascript"
+	src="/jzzjf/js/main.js"></script>
+	
+<script type="text/javascript">
+	function showmsg(){
+		var msg = document.getElementById("msg").value;
+			if(msg!=null&&msg!=''){
+				alert(msg);
+			}
+	}
+</script>
+</head>
+
+<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onload="showmsg();">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link  href="/jzzjf/pages/resource/css/portal.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+body{font-size:12px;background: url(/jzzjf/pages/resource/images/header_bg.png) no-repeat center 0;}
+</style>
+</head>
+<div class="header" style="height:79px;">
+  <h1 class="jf"></h1>
+    <div class="abs"><a href="#">您好，欢迎来到《上海市居住证》积分申请系统！</a></div>
+</div>
+
+	<table align="center" width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top: 5px;">
+		<tr>
+			<td class="bg-left">&nbsp;</td>
+			<td width="1024" valign="top">
+				<table width="100%" border="1" cellspacing="0" cellpadding="0" align="center">
+					<tr>
+						<td>
+							<table width="100%" border="0" cellspacing="0" cellpadding="3" align="center" bordercolordark="#ffffff" bordercolorlight="#000000" height="200">
+								<tr bgcolor="#5E8FBD">
+									<td colspan="2"><img src="/jzzjf/images/trigon.gif" width="5" height="9" hspace="5" align="bottom"><font color="#FFFFFF">欢迎使用居住证积分制网上申报系统！</font></td>
+								</tr>
+								<tr>
+									<td width="85%" valign="top">
+										<table width="100%" border="1" cellspacing="0" cellpadding="2" align="center" bordercolordark="#ffffff" bordercolorlight="#000000">
+											<tr bgcolor="#e0e0e0" align="center">
+												<td colspan="7">申报信息状态</td>
+											</tr>
+											<tr align="center">
+												<td width="10%">序号</td>
+												<td width="16%">用户名</td>
+												<td width="15%">姓名</td>
+												<td width="12%">办理类型</td>
+												<td width="21%">状态</td>
+												<td width="13%">居住证<br/>有效期</td>
+												<td width="13%">积分<br/>有效期</td>
+											</tr>
+											<tr align="center">
+												<td>1</td>
+												<td>123123199001011234</td>
+												<td>例子</td>
+												<td>
+													
+														
+															
+														
+														
+														
+													 (续办)
+												</td>
+												<td>
+													
+													 
+													
+													 
+													 
+													
+														
+														
+															<!-- f_login_finish -->
+															
+																
+																
+																	<!-- f_login_pass -->
+																	
+																		
+																		
+																		
+																			
+																		
+																		
+																		
+																		
+																		
+																		
+																	
+																
+																
+															
+														
+													 (续办)等待受理
+												</td>
+												<td valign="middle">
+													
+														
+													
+														
+															
+														
+														&nbsp;
+																									
+												</td>
+												<td valign="middle">
+													
+														
+														&nbsp;
+													
+												</td>
+											</tr>
+										</table>
+										<p></p>
+										<div align="center">
+											
+												
+													<input type="button" name="Button" value="查看我的申报信息"
+														onClick="window.location.href='/jzzjf/regStepServlet?dispatch=getStep1&showType=viewStep1&pid='">
+													<!-- 
+													
+													 -->
+													 
+													
+													<br>
+												
+												
+											
+											<br>
+											<!-- 
+											
+											 -->
+										</div>
+									</td>
+									<td width="15%" bgcolor="#f9f9f9" align="center">
+											
+											
+												
+													
+													
+													
+														<font color=red>(续办)您的申报信息单位已审核,请携带相关材料去网点进行受理!（网签人员除外）</font>
+													
+													
+													
+													
+													
+													
+												
+											
+											
+										
+										<br> 
+										
+										<br> 
+										<!-- 通知(按钮) --> 
+										<input type="button" name="Button" value="通知" onClick="MM_goToURL('parent','/jzzjf/message?dispatch=list');return document.MM_returnValue">
+										<br> <br> 
+										<!-- 查看网点信息(按钮) --> 
+										<input type="button" name="Button" value="查看网点信息" onClick="window.open('/jzzjf/pingfen/bszn9.jsp')">
+										<br> <br> 
+										<!-- 模拟打分(按钮) --> 
+										<!--  
+											
+												<input type="button" name="Button" value="模拟打分" onClick="MM_goToURL('parent','/jzzjf/grade?dispatch=view');return document.MM_returnValue">
+												<br>
+												<br>
+											 
+										-->
+										<!-- 修改密码(按钮) --> 
+										<input type="button" name="Button2" value="修改密码" onClick="window.location.href='/jzzjf/CorpinfoServlet?dispatch=changePwdView'">
+										<br> <br> 
+										<!-- 退出(按钮) --> 
+										<input type="button" name="Button2" value="退出业务" onClick="MM_goToURL('parent','/jzzjf/loginOut');return document.MM_returnValue">
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table><br/>
+				<table width="100%" border="0" cellspacing="0" cellpadding="0">
+					<tr>
+						<td>
+<head>
+<style type="text/css">
+.footer{border-top:2px solid #296dc0;width:1024px;height:80px;margin:0px auto ;padding-top:18px; background:#eff0ef;}
+.footer p{margin:0px;padding:0px; text-align:center;color:#646262;font:12px/22px 'Simsun';}
+.footer p em{font:12px/22px 'Arial';}
+.footer p span{ color:#0061ab;font:12px/22px 'Simsun'; padding-left:10px;}
+.footer p b{ color:#ec7f0a;font:12px/22px 'Simsun';}
+</style>
+
+</head>
+ <div class="footer">
+  <p>沪ICP备11045457号<span>上海市人力资源和社会保障局版权所有 </span></p>
+  <p><em>Copyright 2009 ShangHai Municipal Human Resources and Social Security Bureau All Rights Reserved</em></p>
+  <p>建议使用<b>IE7.0</b>以上浏览器,<b>1024×768</b>以上分辨率浏览本网站</p>
+</div>
+
+</td>
+					</tr>
+				</table></td>
+			<td valign="top" class="bg-right">&nbsp;</td>
+		</tr>
+	</table>
+	<!-- msgCount为登录后保存在SESSION中 -->
+	
+</body>
+</html>
+

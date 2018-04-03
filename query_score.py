@@ -17,12 +17,12 @@ def eprint(*args, **kwargs):
         print(*args, file=sys.stderr, **kwargs)
 
 def parseCaptcha(s):
-    pic_url = "https://jzh.12333sh.gov.cn/jzh/image.jsp?Math.random();"
+    pic_url = "https://jzzjf.12333sh.gov.cn/jzzjf/inc/code.jsp?Math.random();"
     pic = s.get(pic_url)
     image = np.asarray(bytearray(pic.content), dtype="uint8")
     image = cv2.imdecode(image, cv2.IMREAD_COLOR)
     text = pytesseract.image_to_string(image)
-    text = text.replace(" ", "")  # Remove spaces
+    text = text.replace(' ', '')  # Remove spaces
     if is_verbose:
         print('Captcha:', text)
         # Save it to file for future debug
@@ -35,47 +35,37 @@ def parseCaptcha(s):
 def parseHtml(s):
     from bs4 import BeautifulSoup
     soup = BeautifulSoup(s, 'html.parser')
-    for td in soup.findAll('td', attrs={'class': 'td_bg'}):
+    for table in soup.findAll('table', attrs={'border': '1'}):
+        tr = table.findAll('tr', attrs={'align': 'center'})
+        tr = tr[2]
+        t = tr.findAll('td')
         if is_verbose:
-            print(td)
-        t = td.findAll('td', attrs={'align': 'center'})
-        idnumber = t[2].text.strip()
-        name = t[3].text.strip()
-        result = t[5].text.strip()
-        return [name, idnumber, result]
+            print(t)
+        idnumber = t[1].text.strip()
+        name = t[2].text.strip()
+        typeStr = t[3].text.strip()
+        result = t[4].text.strip()
+        return [name, idnumber, typeStr, result]
 
 
-def getUsername(u):
-    import hashlib
-    # The site use md5(bin(username)) as the user name
-    str_bytes = str.encode(u)
-    m = hashlib.md5(str_bytes)
-    if is_verbose:
-        print('MD5 username: %s' % (m.hexdigest()))
-    return m.hexdigest()
+def getPassword(p):
+    return 'x' * 16 + p + 'x' * 16
 
 
 def loginAndGetResponse():
-    username = getUsername(os.environ['shjzh_username'])
-    password = os.environ['shjzh_password']
+    username = os.environ['shjzz_username']
+    password = getPassword(os.environ['shjzz_password'])
 
     login_payload = {
-        'loginInfo.login_username': username,
-        'loginInfo.login_password': password,
-        'loginInfo.login_type': 0,
-        'Rand': '',
-        'radioCode': 1,
-    }
-
-    accept_payload = {
         'username': username,
-        'Button': '我接受'
+        'pwd': password,
+        'vlidataCode': '',
+        'radioCode': 1,
+        'Submit': '',
     }
 
-    loading_url = "https://jzh.12333sh.gov.cn/jzh/"
-    login_url = "https://jzh.12333sh.gov.cn/jzh/userLoginAction!login.action"
-    accept_url = "https://jzh.12333sh.gov.cn/jzh/userLoginAction!LoginPerson.action"
-    myinfo_url = "https://jzh.12333sh.gov.cn/jzh/personInfoAction!myInfo.action"
+    loading_url = "https://jzzjf.12333sh.gov.cn/jzzjf/"
+    login_url = loading_url + "login?dispatch=dologin"
 
     with requests.session() as s:
         # Login page
@@ -91,10 +81,12 @@ def loginAndGetResponse():
         while (len(text) != 4):
             import time
             eprint('Error parsing a captcha, try another one...')
+            eprint(text)
+            eprint(" ".join("{:02x}".format(ord(c)) for c in text))
             time.sleep(0.5)
             text = parseCaptcha(s)
 
-        login_payload['Rand'] = text
+        login_payload['vlidataCode'] = text
         if is_verbose:
             print(login_payload)
 
@@ -105,20 +97,11 @@ def loginAndGetResponse():
             eprint(p)
             raise Exception('Failed at login url %s' % (login_url))
 
-        # Press Accept button
-        p = s.post(accept_url, data=accept_payload)
-        if is_verbose:
-            print(p.text)
-        if p.status_code != 200:
+        # This system returns 200 even when the captcha is wrong
+        if '验证码输入错误' in p.text:
             eprint(p)
-            raise Exception('Failed at accept url %s' % (accept_url))
-
-        p = s.get(myinfo_url)
-        if is_verbose:
-            print(p.text)
-        if p.status_code != 200:
-            eprint(p)
-            raise Exception('Failed at myinfo url %s' % (myinfo_url))
+            raise Exception('Captcha wrong')
+        
         return p.content
 
 
@@ -126,23 +109,30 @@ def main():
     r = loginAndGetResponse()
     r = parseHtml(r)
     print(r)
+    if r is None:
+        raise Exception('Failed to query')
 
 
 class LocalTest(unittest.TestCase):
-    def test_getUserName(self):
-        r = getUsername('abc')
-        # This is the test in md5.js in the site
-        self.assertEqual('900150983cd24fb0d6963f7d28e17f72', r)
+    def test_getPassword(self):
+        r = getPassword('abc')
+        # The password encode function is in
+        # https://jzzjf.12333sh.gov.cn/jzzjf/pages/resource/js/encode.js
+        # It is as stupid as prepend and append 16 random bytes
+        print(r)
+        self.assertEqual(16 * 2 + len('abc'), len(r))
+        self.assertEqual('abc', r[16:-16])
 
     def test_parser(self):
-        with open('sample.html', 'rb') as f:
+        with open('sample_score.html', 'rb') as f:
             r = f.read()
             r = parseHtml(r)
-            self.assertEqual(3, len(r))
+            print(r)
+            self.assertEqual(4, len(r))
             self.assertEqual('例子', r[0])
             self.assertEqual('123123199001011234', r[1])
-            self.assertEqual('受理通过', r[2])
-            print(r)
+            self.assertEqual('(续办)', r[2])
+            self.assertEqual('(续办)等待受理', r[3])
 
 
 def test(exargs):
@@ -151,9 +141,9 @@ def test(exargs):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description='Query the status of 上海居转户')
+        description='Query the status of 上海居住证积分')
     parser.add_argument('-q', '--query', action='store_true',
-                        help='Query the status of 上海居转户')
+                        help='Query the status of 上海居住证积分')
     parser.add_argument('-t', '--test', action='store_true',
                         help='Run local test')
     parser.add_argument('-v', '--verbose', action='store_true',
