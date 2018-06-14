@@ -8,6 +8,7 @@
 * numpy
 * pytesseract
 * requests
+* recode (for social security card or sbk)
 
 On Ubunut, install requirements with below commands:
 ```

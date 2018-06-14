@@ -19,7 +19,7 @@ do
 done
 
 if [ $n -lt 5 ]; then
-  mail -s "\"Shangh JZZJF result: $r\"" -t $shjzz_mailto <<< "" && echo "Success"
+  mail -s "\"Shanghai JZZJF result: $r\"" -t $shjzz_mailto <<< "" && echo "Success"
 else
   echo "Failed"
 fi
